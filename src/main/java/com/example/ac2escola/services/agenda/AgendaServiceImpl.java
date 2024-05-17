@@ -62,7 +62,8 @@ public class AgendaServiceImpl implements AgendaService {
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
         Agenda agendaProfessorInformado = agendaRepository
-                .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(), data.getDataFim());
+                .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(),
+                        data.getDataFim());
 
         if (agendaProfessorInformado == null) {
             new RuntimeException("Professor não disponível no período informado");
@@ -113,20 +114,96 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Override
     public DadosAgendaDTO findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        Agenda agenda = agendaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Agenda não encontrada"));
+
+        DadosAgendaDTO dadosAgendaDTO = DadosAgendaDTO.builder()
+                .id(agenda.getId())
+                .curso(DadosCursoDTO.builder()
+                        .id(agenda.getCurso().getId())
+                        .descricao(agenda.getCurso().getDescricao())
+                        .cargaHoraria(agenda.getCurso().getCargaHoraria())
+                        .objetivos(agenda.getCurso().getObjetivos())
+                        .ementa(agenda.getCurso().getEmenta())
+                        .build())
+                .professor(DadosProfessorDTO.builder()
+                        .id(agenda.getProfessor().getId())
+                        .nome(agenda.getProfessor().getNome())
+                        .cpf(agenda.getProfessor().getCpf())
+                        .rg(agenda.getProfessor().getRg())
+                        .endereco(agenda.getProfessor().getEndereco())
+                        .celular(agenda.getProfessor().getCelular())
+                        .build())
+                .dataInicio(agenda.getDataInicio())
+                .dataFim(agenda.getDataFim())
+                .cidade(agenda.getCidade())
+                .estado(agenda.getEstado())
+                .cep(agenda.getCep())
+                .resumo(agenda.getResumo())
+                .build();
+
+        return dadosAgendaDTO;
     }
 
     @Override
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        agendaRepository.deleteById(id);
     }
 
     @Override
     public DadosAgendaDTO update(Long id, AgendaDTO data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+        Curso curso = cursoRepository.findById(data.getCurso())
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
+        Agenda agendaProfessorInformado = agendaRepository
+                .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(),
+                        data.getDataFim());
+
+        if (agendaProfessorInformado == null) {
+            new RuntimeException("Professor não disponível no período informado");
+        }
+
+        Professor professor = professorRepository.findById(data.getProfessor())
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+
+        Agenda agenda = agendaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Agenda não encontrada"));
+        agenda.setCurso(curso);
+        agenda.setProfessor(professor);
+        agenda.setDataInicio(data.getDataInicio());
+        agenda.setDataFim(data.getDataFim());
+        agenda.setCidade(data.getCidade());
+        agenda.setEstado(data.getEstado());
+        agenda.setCep(data.getCep());
+        agenda.setResumo(data.getResumo());
+
+        agenda = agendaRepository.save(agenda);
+
+        DadosAgendaDTO dadosAgendaDTO = DadosAgendaDTO.builder()
+                .id(agenda.getId())
+                .curso(DadosCursoDTO.builder()
+                        .id(agenda.getCurso().getId())
+                        .descricao(agenda.getCurso().getDescricao())
+                        .cargaHoraria(agenda.getCurso().getCargaHoraria())
+                        .objetivos(agenda.getCurso().getObjetivos())
+                        .ementa(agenda.getCurso().getEmenta())
+                        .build())
+                .professor(DadosProfessorDTO.builder()
+                        .id(agenda.getProfessor().getId())
+                        .nome(agenda.getProfessor().getNome())
+                        .cpf(agenda.getProfessor().getCpf())
+                        .rg(agenda.getProfessor().getRg())
+                        .endereco(agenda.getProfessor().getEndereco())
+                        .celular(agenda.getProfessor().getCelular())
+                        .build())
+                .dataInicio(agenda.getDataInicio())
+                .dataFim(agenda.getDataFim())
+                .cidade(agenda.getCidade())
+                .estado(agenda.getEstado())
+                .cep(agenda.getCep())
+                .resumo(agenda.getResumo())
+                .build();
+
+        return dadosAgendaDTO;
+    }
 }
