@@ -1,8 +1,8 @@
 package com.example.ac2escola.models;
 
 import java.util.List;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +22,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Entity
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +49,7 @@ public class Professor {
     private String celular;
 
     @ManyToMany
-    @JoinTable(name = "curso_professor", joinColumns = @JoinColumn(name = "curso_id"), inverseJoinColumns = @JoinColumn(name = "professor_id"))
+    @JoinTable(name = "curso_professor", joinColumns = @JoinColumn(name = "professor_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;
 
     @OneToMany(mappedBy = "professor")
