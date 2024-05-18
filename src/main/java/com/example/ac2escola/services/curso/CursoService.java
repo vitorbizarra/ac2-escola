@@ -2,16 +2,17 @@ package com.example.ac2escola.services.curso;
 
 import java.util.List;
 
-import com.example.ac2escola.models.Curso;
+import com.example.ac2escola.dto.curso.CursoDTO;
+import com.example.ac2escola.dto.curso.DadosCursoDTO;
 
 public interface CursoService {
-    List<Curso> findAll();
+    List<DadosCursoDTO> findAll();
 
-    Curso create(Curso curso);
+    DadosCursoDTO create(CursoDTO data);
 
-    Curso findById(Long id);
+    DadosCursoDTO findById(Long id);
 
     void delete(Long id);
 
-    Curso update(Long id, Curso curso);
+    DadosCursoDTO update(Long id, CursoDTO data);
 }
