@@ -1,6 +1,7 @@
 package com.example.ac2escola.services.agenda;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class AgendaServiceImpl implements AgendaService {
         Curso curso = cursoRepository.findById(data.getCurso())
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        Agenda agendaProfessorInformado = agendaRepository
+        Optional<Agenda> agendaProfessorInformado = agendaRepository
                 .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(),
                         data.getDataFim());
 
@@ -155,7 +156,7 @@ public class AgendaServiceImpl implements AgendaService {
         Curso curso = cursoRepository.findById(data.getCurso())
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        Agenda agendaProfessorInformado = agendaRepository
+        Optional<Agenda> agendaProfessorInformado = agendaRepository
                 .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(),
                         data.getDataFim());
 
