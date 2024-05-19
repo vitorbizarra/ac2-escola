@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
-    @Query("select a from Agenda a where a.professor.id = ?1 and a.dataInicio = ?2 and a.dataFim = ?3")
+    @Query("SELECT a FROM Agenda a WHERE a.professor.id = ?1 AND (a.dataInicio BETWEEN ?2 AND ?3 OR a.dataFim BETWEEN ?2 AND ?3)")
     Optional<Agenda> findByProfessorAndDataInicioAndDataFim(Long professorId, LocalDate dataInicio, LocalDate dataFim);
 }
