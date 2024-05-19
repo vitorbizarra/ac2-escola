@@ -1,6 +1,7 @@
 package com.example.ac2escola.models;
 
 import java.util.List;
+import java.util.ArrayList;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,8 +44,8 @@ public class Curso {
     private String ementa;
 
     @ManyToMany(mappedBy = "cursos")
-    private List<Professor> professores;
+    private List<Professor> professores = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso")
-    private List<Agenda> agendas;
+    private List<Agenda> agendas = new ArrayList<>();
 }

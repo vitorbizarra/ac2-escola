@@ -13,6 +13,7 @@ import com.example.ac2escola.models.Agenda;
 import com.example.ac2escola.models.Curso;
 import com.example.ac2escola.models.Professor;
 import com.example.ac2escola.repositories.CursoRepository;
+import com.example.ac2escola.repositories.ProfessorRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CursoServiceImpl implements CursoService {
     private final CursoRepository cursoRepository;
+    private final ProfessorRepository professorRepository;
 
     @Override
     public List<DadosCursoDTO> findAll() {
@@ -81,8 +83,7 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public DadosCursoDTO findById(Long id) {
-        Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrada"));
+        Curso curso = cursoRepository.findCursoFetchAgendasFetchProfessores(id);
 
         DadosCursoDTO dadosCursoDTO = DadosCursoDTO.builder()
                 .id(curso.getId())
@@ -126,7 +127,7 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public DadosCursoDTO update(Long id, CursoDTO data) {
         Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
         curso.setDescricao(data.getDescricao());
         curso.setCargaHoraria(data.getCargaHoraria());
@@ -143,5 +144,34 @@ public class CursoServiceImpl implements CursoService {
                 .build();
 
         return dadosCursoDTO;
+    }
+
+    @Override
+    public void associateProfessor(Long id, Long idProfessor) {
+        /*
+         * Projeto projeto = projetoRepository.findById(id)
+         * .orElseThrow(() -> new
+         * RuntimeException("Projeto com o id informado não encontrado"));
+         * 
+         * Funcionario funcionario = funcionarioRepository.findById(idFuncionario)
+         * .orElseThrow(() -> new
+         * RuntimeException("Funcionário com o id informado não encontrado"));
+         * 
+         * projeto.getFuncionarios().add(funcionario);
+         * 
+         * projetoRepository.save(projeto);
+         */
+        Curso curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        Professor professor = professorRepository.findProfessorFetchCursos(idProfessor);
+
+        List<Curso> cursos = professor.getCursos();
+
+        cursos.add(curso);
+
+        professor.setCursos(cursos);
+
+        professorRepository.save(professor);
     }
 }

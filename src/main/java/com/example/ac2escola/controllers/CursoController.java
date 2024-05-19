@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("api/curso")
@@ -23,13 +25,18 @@ public class CursoController {
     private final CursoService cursoService;
 
     @GetMapping
-    public List<DadosCursoDTO> findAll(){
+    public List<DadosCursoDTO> findAll() {
         return cursoService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DadosCursoDTO create(@RequestBody CursoDTO curso){
+    public DadosCursoDTO create(@RequestBody CursoDTO curso) {
         return cursoService.create(curso);
+    }
+
+    @PutMapping("{id}")
+    public void associateProfessor(@PathVariable Long id, @RequestBody Long idProfessor) {
+        cursoService.associateProfessor(id, idProfessor);
     }
 }

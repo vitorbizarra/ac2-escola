@@ -15,4 +15,6 @@ public interface CursoService {
     void delete(Long id);
 
     DadosCursoDTO update(Long id, CursoDTO data);
+
+    void associateProfessor(Long id, Long idProfessor);
 }
