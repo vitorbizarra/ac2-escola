@@ -70,8 +70,11 @@ public class AgendaServiceImpl implements AgendaService {
             throw new RuntimeException("Professor não disponível no período informado");
         }
 
-        Professor professor = professorRepository.findById(data.getProfessor())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+        Professor professor = professorRepository.findProfessorFetchCursos(data.getProfessor());
+
+        if (professor.getCursos().contains(curso)) {
+            System.out.println("Teste");
+        }
 
         Agenda agenda = new Agenda();
         agenda.setCurso(curso);
