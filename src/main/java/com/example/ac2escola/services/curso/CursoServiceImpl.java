@@ -72,6 +72,7 @@ public class CursoServiceImpl implements CursoService {
         curso = cursoRepository.save(curso);
 
         DadosCursoDTO dadosCursoDTO = DadosCursoDTO.builder()
+                .id(curso.getId())
                 .descricao(curso.getDescricao())
                 .cargaHoraria(curso.getCargaHoraria())
                 .objetivos(curso.getObjetivos())
@@ -148,19 +149,6 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public void associateProfessor(Long id, Long idProfessor) {
-        /*
-         * Projeto projeto = projetoRepository.findById(id)
-         * .orElseThrow(() -> new
-         * RuntimeException("Projeto com o id informado não encontrado"));
-         * 
-         * Funcionario funcionario = funcionarioRepository.findById(idFuncionario)
-         * .orElseThrow(() -> new
-         * RuntimeException("Funcionário com o id informado não encontrado"));
-         * 
-         * projeto.getFuncionarios().add(funcionario);
-         * 
-         * projetoRepository.save(projeto);
-         */
         Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
