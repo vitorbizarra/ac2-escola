@@ -66,8 +66,8 @@ public class AgendaServiceImpl implements AgendaService {
                 .findByProfessorAndDataInicioAndDataFim(data.getProfessor(), data.getDataInicio(),
                         data.getDataFim());
 
-        if (agendaProfessorInformado == null) {
-            new RuntimeException("Professor não disponível no período informado");
+        if (agendaProfessorInformado.isPresent()) {
+            throw new RuntimeException("Professor não disponível no período informado");
         }
 
         Professor professor = professorRepository.findById(data.getProfessor())
