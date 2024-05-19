@@ -6,37 +6,45 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.example.ac2escola.models.Curso;
-import com.example.ac2escola.models.Professor;
-import com.example.ac2escola.repositories.CursoRepository;
-import com.example.ac2escola.repositories.ProfessorRepository;
+import com.example.ac2escola.controllers.CursoController;
+import com.example.ac2escola.controllers.ProfessorController;
+import com.example.ac2escola.dto.curso.CursoDTO;
+import com.example.ac2escola.dto.curso.DadosCursoDTO;
+import com.example.ac2escola.dto.professor.DadosProfessorDTO;
+import com.example.ac2escola.dto.professor.ProfessorDTO;
 
 @SpringBootApplication
 public class Ac2EscolaApplication {
 
 	@Bean
 	public CommandLineRunner init(
-			@Autowired CursoRepository cursoRepository,
-			@Autowired ProfessorRepository professorRepository) {
+			@Autowired ProfessorController professorController,
+			@Autowired CursoController cursoController) {
 		return args -> {
-			Professor professor = professorRepository.save(new Professor(
+
+			ProfessorDTO professorDTO = new ProfessorDTO(
 					null,
 					"Professor",
 					"123.456.789-09",
 					"99.999.999-99",
 					"Rua 123, Sorocaba",
-					"(99) 99999-9999",
-					null,
-					null));
+					"(99) 99999-9999");
 
-			Curso curso = cursoRepository.save(new Curso(
+			DadosProfessorDTO dadosProfessorDTO = professorController.create(professorDTO);
+
+			CursoDTO cursoDTO = new CursoDTO(
 					null,
 					"ADS",
 					120,
 					"Analisar e desenvolver sistemas",
-					"Analisar sistemas, desenvolver sistemas",
-					null,
-					null));
+					"Analisar sistemas, desenvolver sistemas");
+
+			DadosCursoDTO dadosCursoDTO = cursoController.create(cursoDTO);
+
+			cursoController.associateProfessor(
+					dadosCursoDTO.getId(),
+					dadosProfessorDTO.getId());
+
 		};
 	}
 
