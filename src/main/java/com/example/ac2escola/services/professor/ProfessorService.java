@@ -2,16 +2,17 @@ package com.example.ac2escola.services.professor;
 
 import java.util.List;
 
-import com.example.ac2escola.models.Professor;
+import com.example.ac2escola.dto.professor.DadosProfessorDTO;
+import com.example.ac2escola.dto.professor.ProfessorDTO;
 
 public interface ProfessorService {
-    List<Professor> findAll();
+    List<DadosProfessorDTO> findAll();
 
-    Professor create(Professor professor);
+    DadosProfessorDTO create(ProfessorDTO data);
 
-    Professor findById(Long id);
+    DadosProfessorDTO findById(Long id);
 
     void delete(Long id);
 
-    Professor update(Long id, Professor professor);
+    DadosProfessorDTO update(Long id, ProfessorDTO data);
 }
