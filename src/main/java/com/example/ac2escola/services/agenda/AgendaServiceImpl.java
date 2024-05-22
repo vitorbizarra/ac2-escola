@@ -72,8 +72,19 @@ public class AgendaServiceImpl implements AgendaService {
 
         Professor professor = professorRepository.findProfessorFetchCursos(data.getProfessor());
 
+        boolean professorNaoMinistraCurso = professor
+                .getCursos()
+                .stream()
+                .map((Curso professorCurso) -> professorCurso.getId() == curso.getId())
+                .collect(Collectors.toList())
+                .isEmpty();
+
+        if (professorNaoMinistraCurso) {
+            throw new RuntimeException("Professor não pode ministrar o curso informado");
+        }
+
         // if (!professor.getCursos().contains(curso)) {
-        //     throw new RuntimeException("Professor não pode ministrar o curso informado");
+        // throw new RuntimeException("Professor não pode ministrar o curso informado");
         // }
 
         Agenda agenda = new Agenda();
