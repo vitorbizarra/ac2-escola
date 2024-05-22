@@ -210,4 +210,37 @@ public class AgendaServiceImpl implements AgendaService {
 
         return dadosAgendaDTO;
     }
+
+    @Override
+    public List<DadosAgendaDTO> findProfessorAgenda(Long id) {
+        Professor professor = professorRepository.findProfessorFetchCursos(id);
+
+        return professor.getAgendas()
+                .stream()
+                .map((Agenda agenda) -> DadosAgendaDTO.builder()
+                        .id(agenda.getId())
+                        .dataInicio(agenda.getDataInicio())
+                        .dataFim(agenda.getDataFim())
+                        .cidade(agenda.getCidade())
+                        .estado(agenda.getEstado())
+                        .cep(agenda.getCep())
+                        .resumo(agenda.getResumo())
+                        .professor(DadosProfessorDTO.builder()
+                                .id(agenda.getProfessor().getId())
+                                .nome(agenda.getProfessor().getNome())
+                                .cpf(agenda.getProfessor().getCpf())
+                                .rg(agenda.getProfessor().getRg())
+                                .endereco(agenda.getProfessor().getEndereco())
+                                .celular(agenda.getProfessor().getCelular())
+                                .build())
+                        .curso(DadosCursoDTO.builder()
+                                .id(agenda.getCurso().getId())
+                                .descricao(agenda.getCurso().getDescricao())
+                                .cargaHoraria(agenda.getCurso().getCargaHoraria())
+                                .objetivos(agenda.getCurso().getObjetivos())
+                                .ementa(agenda.getCurso().getEmenta())
+                                .build())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

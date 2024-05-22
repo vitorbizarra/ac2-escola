@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("api/agenda")
@@ -26,6 +27,11 @@ public class AgendaController {
     @GetMapping
     public List<DadosAgendaDTO> findAll() {
         return agendaService.findAll();
+    }
+
+    @GetMapping("{id}")
+    public List<DadosAgendaDTO> findAll(@PathVariable Long id) {
+        return agendaService.findProfessorAgenda(id);
     }
 
     @PostMapping

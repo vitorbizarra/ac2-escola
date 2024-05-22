@@ -8,6 +8,8 @@ import com.example.ac2escola.dto.agenda.DadosAgendaDTO;
 public interface AgendaService {
     List<DadosAgendaDTO> findAll();
 
+    List<DadosAgendaDTO> findProfessorAgenda(Long id);
+
     DadosAgendaDTO create(AgendaDTO data);
 
     DadosAgendaDTO findById(Long id);
